@@ -86,6 +86,7 @@ impl Database {
 		icon,
 		description_raw,
         description_formatted,
+		modded,
 		prevents_chat_reports,
 		enforces_secure_chat,
 		first_seen,
@@ -93,7 +94,7 @@ impl Database {
 		online_players,
 		max_players,
         country,
-    	asn) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+    	asn) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
     	ON CONFLICT (address, port) DO UPDATE SET
     	software = EXCLUDED.software,
     	version = EXCLUDED.version,
@@ -101,6 +102,7 @@ impl Database {
     	icon = EXCLUDED.icon,
     	description_raw = EXCLUDED.description_raw,
     	description_formatted = EXCLUDED.description_formatted,
+    	modded = EXCLUDED.modded,
     	prevents_chat_reports = EXCLUDED.prevents_chat_reports,
     	enforces_secure_chat = EXCLUDED.enforces_secure_chat,
     	last_seen = EXCLUDED.last_seen,
@@ -121,6 +123,8 @@ impl Database {
 		// description_formatted is for pre-formatted descriptions
 		// useful for regex searches and for applications that just quickly need a servers description
 		.bind(formatted)
+		.bind(server.modded)
+		// modded is to check if the servers uses any modloader
 		.bind(server.prevents_reports)
 		.bind(server.enforces_secure_chat)
 		.bind(timestamp)
