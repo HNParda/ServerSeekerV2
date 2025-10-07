@@ -1,5 +1,6 @@
 /target
 /migrations
 .idea
+.vscode
 config.toml
 .env
